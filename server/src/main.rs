@@ -1,14 +1,17 @@
-mod cmd_parser;
-use std::{net::{TcpListener, TcpStream, Shutdown, SocketAddr}, io::{BufReader, BufRead, Write}};
+pub mod utils;
+use utils::cmd_parser::parse_commands;
+
+mod client_handler;
+use std::net::TcpListener;
 
 
 fn main() -> Result<(), std::io::Error> {
 
-    let arguments = cmd_parser::parse_commands();
+    let arguments = parse_commands();
 
     match arguments.port_flag.as_str() {
         "-p" => {
-            eprintln!("Using port {}", arguments.port);
+            eprintln!("Listening on port: {}", arguments.port);
 
             server_loop(arguments.port);
         },
@@ -17,31 +20,6 @@ fn main() -> Result<(), std::io::Error> {
 
    Ok(())        
 
-}
-
-/**
- * function to handle a client
- */
-fn handle_client(stream: TcpStream, client_port: SocketAddr) {
-
-    
-    let reader = BufReader::new(&stream); // 2
-
-    for (index, line) in reader.lines().enumerate() { //Loop through all the lines in the file
-        eprintln!("{} - CURRENT LINE: {:?}", index, line);
-    }
-
-    repond_client(client_port);
-
-    stream.shutdown(Shutdown::Both).expect("shutdown call failed");
-
-}
-
-fn repond_client(client_addr: SocketAddr) {
-    let stream = TcpStream::connect(client_addr);
-
-
-    let _ = stream.unwrap().write(b"we good");
 }
 
 /**
@@ -63,9 +41,7 @@ fn server_loop(port_string: i32) {
         let client_addr = s.peer_addr().unwrap();
         eprintln!("Accepting from: {:?}", s.peer_addr());
 
-        let _ = handle_client(s, client_addr);
+        let _ = client_handler::handle_client(s, client_addr);
 
     }
-
 }
-
