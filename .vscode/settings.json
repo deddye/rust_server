@@ -1,0 +1,14 @@
+{
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSave": true
+    },
+    "rust-analyzer.linkedProjects": [
+        "./server/Cargo.toml",
+        "./server/Cargo.toml",
+        "./server/Cargo.toml",
+        "./server/Cargo.toml",
+        "./server/Cargo.toml",
+        "./server/Cargo.toml"
+    ]
+}
