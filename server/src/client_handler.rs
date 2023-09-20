@@ -1,13 +1,13 @@
 use std::{
-    io::{self, BufRead, BufReader, Read, Write},
-    net::{Shutdown, SocketAddr, TcpStream},
+    io::{BufRead, BufReader, Read, Write},
+    net::TcpStream,
     str,
 };
 
 /**
  * function to handle a client
  */
-pub fn handle_client(stream: TcpStream, client_port: SocketAddr) {
+pub fn handle_client(mut stream: TcpStream) {
     let mut reader = BufReader::new(stream.try_clone().unwrap());
     let mut name = String::new();
     loop {
@@ -33,10 +33,7 @@ pub fn handle_client(stream: TcpStream, client_port: SocketAddr) {
     reader.read_exact(&mut buffer).unwrap(); //Get the Body Content.
     let body = str::from_utf8(&buffer).unwrap();
     println!("{body}");
-}
 
-fn repond_client(client_addr: SocketAddr) {
-    let stream = TcpStream::connect(client_addr);
-
-    let _ = stream.unwrap().write(b"we good");
+    let _ = stream.write(b"HTTP/1.1 200 OK\r\n\r\nThis is your response");
+    stream.flush().unwrap();
 }

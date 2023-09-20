@@ -34,9 +34,8 @@ fn server_loop(port_string: i32) {
 
     while let Some(stream) = incoming.next() {
         let s = stream.unwrap();
-        let client_addr = s.peer_addr().unwrap();
         eprintln!("Accepting from: {:?}", s.peer_addr());
 
-        let _ = client_handler::handle_client(s, client_addr);
+        let _ = client_handler::handle_client(s);
     }
 }
