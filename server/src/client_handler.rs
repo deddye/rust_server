@@ -17,6 +17,7 @@ pub fn handle_client(mut stream: TcpStream) {
             break;
         }
     }
+
     let mut size = 0;
     let linesplit = name.split("\n");
     for l in linesplit {
@@ -31,9 +32,8 @@ pub fn handle_client(mut stream: TcpStream) {
     }
     let mut buffer = vec![0; size]; //New Vector with size of Content
     reader.read_exact(&mut buffer).unwrap(); //Get the Body Content.
-    let body = str::from_utf8(&buffer).unwrap();
-    println!("{body}");
+    let _ = stream.write(b"HTTP/1.1 200 OK\r\n\r\nRequest Body: ");
+    let _ = stream.write(&buffer);
 
-    let _ = stream.write(b"HTTP/1.1 200 OK\r\n\r\nThis is your response");
     stream.flush().unwrap();
 }
