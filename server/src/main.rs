@@ -2,6 +2,7 @@ pub mod utils;
 use utils::cmd_parser::parse_commands;
 
 mod client_handler;
+mod http;
 use std::net::TcpListener;
 
 fn main() -> Result<(), std::io::Error> {
@@ -23,11 +24,6 @@ fn main() -> Result<(), std::io::Error> {
  * function start the server and begin listening
  */
 fn server_loop(port_string: i32) {
-    /*
-    starting off single threaded for now
-    that means synchronously in rust right??
-     */
-
     let listener = TcpListener::bind(format!("127.0.0.1:{port_string}")).unwrap();
 
     let mut incoming = listener.incoming();
