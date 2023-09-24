@@ -33,3 +33,10 @@ pub fn parse_request(stream: &mut TcpStream) -> Vec<u8> {
 
     return buffer;
 }
+
+// FUNCTION TO PARSE HEADERS
+
+// GET THE END POINT FROM HEADER AND RESPOND DEPENDING ON
+// HTTP REQUEST TYPE AND SPECIFIED ENDPOINT
+
+// FUNCTION TO PARSE BODY
